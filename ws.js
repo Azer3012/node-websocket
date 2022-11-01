@@ -9,13 +9,27 @@ const server=http.createServer()
 const wss=new WebSocketServer({server})
 
 
-server.on("request",(req,tes)=>{
+server.on("request",(req,res)=>{
     const fileContent=fs.readFileSync("index.html")
-    resizeBy.end(fileContent.toString())
+    res.end(fileContent.toString())
 })
 
-wss.on('connection',()=>{
+//connect olmaq ucun
+wss.on('connection',(socket)=>{
     console.log('client connected');
+
+    //messaji dinlemek ucun
+    socket.on("message",(data)=>{
+        console.log("message recieved " + data);
+
+        //mesaj gondermek ucun
+        socket.send("Hi  client")
+
+        //bu yuxaridaki mesaj ancaq bir client-a gedir bunu butun clientlara gondermek ucun ise
+        wss.clients.forEach(client=>{
+            client.send('Hi clients')
+        })
+    })
 })
 
 

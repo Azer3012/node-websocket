@@ -8,8 +8,26 @@
 </head>
 <body>
     
+    <button class="btn">Send</button>
     <script>
-        console.log("hello");
+
+        const sendBtn=document.querySelector('.btn')
+        const socket= new WebSocket("ws://localhost:8080")
+
+        socket.addEventListener('open',(e)=>{
+
+            console.log("open");
+            // socket.send("hello server")
+        })
+
+
+        socket.addEventListener("message",(event)=>{
+            console.log('recoevied message' +event.data)
+        })
+
+        sendBtn.addEventListener('click',()=>{
+            socket.send('salam server')
+        })
     </script>
 </body>
 </html>
